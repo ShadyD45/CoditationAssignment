@@ -256,73 +256,73 @@ int main()
 		switch(iChoice)
 		{
 			case 1: cout<<"Enter size of grid:\n";
-					cout<<"Rows: ";
-					cin>>iRow;
-					cout<<"Columns: ";
-					cin>>iCol;
+				cout<<"Rows: ";
+				cin>>iRow;
+				cout<<"Columns: ";
+				cin>>iCol;
 
-					objGrid = new Grid(iRow,iCol);
+				objGrid = new Grid(iRow,iCol);
 
-					cout<<"-----------Please enter the data about cells------------\n";
-					for(int i = 0; i < iRow*iCol; ++i)
+				cout<<"-----------Please enter the data about cells------------\n";
+				for(int i = 0; i < iRow*iCol; ++i)
+				{
+					cout<<"---Cell "<<i+1<<" Data---";
+					cout<<"\nEnter Name: ";
+					cin>>strName;
+					cout<<"\nEnter State(Dead or Alive): ";
+					cin>>szState;
+
+					if(strcasecmp(szState, "dead") == 0)
 					{
-						cout<<"---Cell "<<i+1<<" Data---";
-						cout<<"\nEnter Name: ";
-						cin>>strName;
-						cout<<"\nEnter State(Dead or Alive): ";
-						cin>>szState;
-
-						if(strcasecmp(szState, "dead") == 0)
-						{
-							iState = DEAD;
-						}
-						else if(strcasecmp(szState, "alive") == 0)
-						{
-							iState = LIVE;
-						}
-						else
-						{
-							cout<<"\nPlease enter a valid state\n";
-							--i;
-							continue;
-						}
-
-						// Insert the cell into the grid
-						objGrid->InsertCell(strName, iState);
+						iState = DEAD;
 					}
-					break;
+					else if(strcasecmp(szState, "alive") == 0)
+					{
+						iState = LIVE;
+					}
+					else
+					{
+						cout<<"\nPlease enter a valid state\n";
+						--i;
+						continue;
+					}
+
+					// Insert the cell into the grid
+					objGrid->InsertCell(strName, iState);
+				}
+				break;
 			
 			case 2:	if(NULL == objGrid)
-					{
-						cout<<"\nError: No grid found\nPlease create a grid first\n\n";
-					}
-					else
-					{
-						objGrid->NextState();
-						cout<<"\n---------The next state of the Cells---------\n";
-						objGrid->DisplayGrid();
-					}
-					break;
+				{
+					cout<<"\nError: No grid found\nPlease create a grid first\n\n";
+				}
+				else
+				{
+					objGrid->NextState();
+					cout<<"\n---------The next state of the Cells---------\n";
+					objGrid->DisplayGrid();
+				}
+				break;
 			
 			case 3: 
-					break;
+				break;
 			
 			case 4: if(NULL == objGrid)
-					{
-						cout<<"\nError: No grid found\nPlease create a grid first\n\n";
-					}
-					else
-					{
-						cout<<"\n---------The Cell Grid---------\n";
-						objGrid->DisplayGrid();
-					}
-					break;
+				{
+					cout<<"\nError: No grid found\nPlease create a grid first\n\n";
+				}
+				else
+				{
+					cout<<"\n---------The Cell Grid---------\n";
+					objGrid->DisplayGrid();
+				}
+				break;
 
 			case 0: cout<<"\nThankyou for using our application\n";
-					break;
+				break;
 			
 			default: cout<<"\nPlease enter a valid input\n";
-					 break;
+				 break;
 		}
 	}
 
