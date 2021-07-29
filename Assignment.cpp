@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string.h>
 #include<vector>
 
 #define LIVE 1
@@ -233,8 +234,101 @@ class Grid
 
 int main()
 {
-	Grid *objGrid = new Grid(4,3);
+	int iChoice = -1;
+	int iRow = 0, iCol = 0;
+	int iState = 0;
+	string strName;
+	
+	char szState[6];
 
+	Grid *objGrid = NULL;
+
+	while(iChoice != 0)
+	{
+		cout<<"1) Create Cell Grid\n";
+		cout<<"2) Generate next state\n";
+		cout<<"3) Search Cell by name\n";
+		cout<<"4) Display Cell Grid\n";
+		cout<<"0) Exit\n";
+		cout<<"Enter Choice: ";
+		cin>>iChoice;
+
+		switch(iChoice)
+		{
+			case 1: cout<<"Enter size of grid:\n";
+					cout<<"Rows: ";
+					cin>>iRow;
+					cout<<"Columns: ";
+					cin>>iCol;
+
+					objGrid = new Grid(iRow,iCol);
+
+					cout<<"-----------Please enter the data about cells------------\n";
+					for(int i = 0; i < iRow*iCol; ++i)
+					{
+						cout<<"---Cell "<<i+1<<" Data---";
+						cout<<"\nEnter Name: ";
+						cin>>strName;
+						cout<<"\nEnter State(Dead or Alive): ";
+						cin>>szState;
+
+						if(strcasecmp(szState, "dead") == 0)
+						{
+							iState = DEAD;
+						}
+						else if(strcasecmp(szState, "alive") == 0)
+						{
+							iState = LIVE;
+						}
+						else
+						{
+							cout<<"\nPlease enter a valid state\n";
+							--i;
+							continue;
+						}
+
+						// Insert the cell into the grid
+						objGrid->InsertCell(strName, iState);
+					}
+					break;
+			
+			case 2:	if(NULL == objGrid)
+					{
+						cout<<"\nError: No grid found\nPlease create a grid first\n\n";
+					}
+					else
+					{
+						objGrid->NextState();
+						cout<<"\n---------The next state of the Cells---------\n";
+						objGrid->DisplayGrid();
+					}
+					break;
+			
+			case 3: 
+					break;
+			
+			case 4: if(NULL == objGrid)
+					{
+						cout<<"\nError: No grid found\nPlease create a grid first\n\n";
+					}
+					else
+					{
+						cout<<"\n---------The Cell Grid---------\n";
+						objGrid->DisplayGrid();
+					}
+					break;
+
+			case 0: cout<<"\nThankyou for using our application\n";
+					break;
+			
+			default: cout<<"\nPlease enter a valid input\n";
+					 break;
+		}
+	}
+
+	/*
+	Grid *objGrid = new Grid(4,3);
+	
 	objGrid->InsertCell("s", 0);
 	objGrid->InsertCell("w", 1);
 	objGrid->InsertCell("m", 0);
@@ -258,5 +352,10 @@ int main()
 	objGrid->DisplayGrid();
 	cout<<endl;
 
+
+	objGrid->NextState();
+	objGrid->DisplayGrid();
+	cout<<endl;
+	*/
 	return 0;
 }
