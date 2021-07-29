@@ -39,7 +39,7 @@ class Cell
 
 		string getName()
 		{
-			return strName;
+			return this->strName;
 		}
 
 		int getState()
@@ -230,22 +230,42 @@ class Grid
 
 			vctGrid = vctNext;
 		}
+
+		int SearchCell(string strName)
+		{
+			if(strName != " ")
+			{
+				int i = 0, j = 0;
+
+				for(i = 0; i < iRow; ++i)
+				{
+					for(j = 0; j < iCol; ++j)
+					{
+						if(vctGrid[i][j].getName() == strName)
+						{
+							return GetCellState(i,j);
+						}
+					}
+				}
+			}	
+
+			return -1;
+		}
 };
 
 int main()
 {
 	int iChoice = -1;
 	int iRow = 0, iCol = 0;
-	int iState = 0;
+	int iState = 0, iRet = 0;
 	string strName;
-	
 	char szState[6];
 
 	Grid *objGrid = NULL;
 
 	while(iChoice != 0)
 	{
-		cout<<"1) Create Cell Grid\n";
+		cout<<"\n1) Create Cell Grid\n";
 		cout<<"2) Generate next state\n";
 		cout<<"3) Search Cell by name\n";
 		cout<<"4) Display Cell Grid\n";
@@ -255,7 +275,7 @@ int main()
 
 		switch(iChoice)
 		{
-			case 1: cout<<"Enter size of grid:\n";
+			case 1: cout<<"\nEnter size of grid:\n";
 					cout<<"Rows: ";
 					cin>>iRow;
 					cout<<"Columns: ";
@@ -266,7 +286,7 @@ int main()
 					cout<<"-----------Please enter the data about cells------------\n";
 					for(int i = 0; i < iRow*iCol; ++i)
 					{
-						cout<<"---Cell "<<i+1<<" Data---";
+						cout<<"\n---Cell "<<i+1<<" Data---";
 						cout<<"\nEnter Name: ";
 						cin>>strName;
 						cout<<"\nEnter State(Dead or Alive): ";
@@ -304,7 +324,27 @@ int main()
 					}
 					break;
 			
-			case 3: 
+			case 3: cout<<"\nEnter cell name to search: ";
+					cin>>strName;
+
+					iRet = objGrid->SearchCell(strName);
+
+					if(iRet == -1)
+					{
+						cout<<"\nCell not found, Please enter valid name\n";
+					}
+					else
+					{
+						cout<<"\nCell Found!\nCell Name: "<<strName;
+						if(iRet == DEAD)
+						{
+							cout<<"\nCell State: DEAD\n";
+						}
+						else
+						{
+							cout<<"\nCell State: ALIVE\n";
+						}
+					}
 					break;
 			
 			case 4: if(NULL == objGrid)
@@ -319,6 +359,7 @@ int main()
 					break;
 
 			case 0: cout<<"\nThankyou for using our application\n";
+					delete objGrid;
 					break;
 			
 			default: cout<<"\nPlease enter a valid input\n";
