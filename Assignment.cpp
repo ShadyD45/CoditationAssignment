@@ -28,6 +28,7 @@ class Cell
 			this->strName = strName;
 		}
 
+
 		bool isAlive()
 		{
 			if(this->iState == DEAD)
@@ -81,6 +82,18 @@ class Grid
 		vector<vector<Cell>> vctGrid;
 		vector<Cell> vctRow;
 
+		void DisplayRow(vector<Cell> vct)
+		{
+			for(auto x : vct)
+			{
+				//cout<<x.getState()<<x.getName()<<"\t";	Printing Cells state along with its name
+				cout<<x.getState()<<"\t";				//	Printing only state of the cells
+			}
+			cout<<"\n";
+		}
+
+		// Fill the grid with default values
+		// All cells are DEAD by default
 		void FillGrid()
 		{
 			Cell objCell;
@@ -93,15 +106,7 @@ class Grid
 			}
 		}
 
-		void DisplayRow(vector<Cell> vct)
-		{
-			for(auto x : vct)
-			{
-				cout<<x.getState()<<x.getName()<<"\t";
-			}
-			cout<<"\n";
-		}
-
+		// Get count of live neighbors of a specified cell
 		int GetLiveNeighbors(int iRow, int iCol)
 		{
 			int iLiveCount = 0;
@@ -109,16 +114,16 @@ class Grid
 
 			/*		
 				Positions of all neighbours of given (row,col)
-					(i-1,j-1)	(i-1,j) (i-1,j+1)
-					(i,j-1)		(i,j)	(i,j+1)
-					(i+1,j-1)	(i+1,j)	(i+1,j+1)
+					(i-1,j-1) (i-1,j) (i-1,j+1)
+					(i,j-1)	  (i,j)	  (i,j+1)
+					(i+1,j-1) (i+1,j) (i+1,j+1)
 			*/
 			for(auto vct : vctNeighbours)
 			{
 				int x = vct[0] + iRow;
 				int y = vct[1] + iCol;
 				
-				if(x >= 0 && x < this->iRow && y >= 0 && y < this->iCol && vctGrid[x][y].isAlive())
+				if((x >= 0) && (x < this->iRow) && (y >= 0) && (y < this->iCol) && (vctGrid[x][y].isAlive()))
 				{
 					iLiveCount++;
 				}
@@ -151,9 +156,10 @@ class Grid
 			FillGrid();		
 		}
 
+		// Insert a single cell into the grid
 		bool InsertCell(string strName, int iState)
 		{
-			if((strName == "") || (iState < DEAD) || (iState > LIVE) || (iColOffset == iCol) || (iRowOffset == iRow))
+			if((strName == "") || (iState < DEAD) || (iState > LIVE) || (iRowOffset == iRow) || (iColOffset == iCol))
 			{
 				return false;
 			}
@@ -180,6 +186,7 @@ class Grid
 			return true;
 		}
 
+		// Get the state of the cell at specified position 
 		int GetCellState(int iRow, int iCol)
 		{
 			if((iRow >= this->iRow) || (iCol >= this->iCol))
@@ -190,6 +197,7 @@ class Grid
 			return vctGrid[iRow][iCol].getState();
 		}
 
+		// Display Cell Grid
 		void DisplayGrid()
 		{
 			cout<<"\n";
@@ -199,6 +207,7 @@ class Grid
 			}
 		}
 
+		// Generate next state of the Grid
 		void NextState()
 		{
 			Cell ob;
@@ -231,6 +240,7 @@ class Grid
 			vctGrid = vctNext;
 		}
 
+		// Search a cell by its name and return its state
 		int SearchCell(string strName)
 		{
 			if(strName != " ")
@@ -324,25 +334,33 @@ int main()
 					}
 					break;
 			
-			case 3: cout<<"\nEnter cell name to search: ";
-					cin>>strName;
-
-					iRet = objGrid->SearchCell(strName);
-
-					if(iRet == -1)
+			case 3: if(NULL == objGrid)
 					{
-						cout<<"\nCell not found, Please enter valid name\n";
+						cout<<"\nError: No grid found\nPlease create a grid first\n\n";
 					}
 					else
 					{
-						cout<<"\nCell Found!\nCell Name: "<<strName;
-						if(iRet == DEAD)
+						cout<<"\nEnter cell name to search: ";
+						cin>>strName;
+
+						iRet = objGrid->SearchCell(strName);
+
+						if(iRet == -1)
 						{
-							cout<<"\nCell State: DEAD\n";
+							cout<<"\nCell not found, Please enter valid name\n";
 						}
 						else
 						{
-							cout<<"\nCell State: ALIVE\n";
+							cout<<"\n---------Cell Found--------\nCell Name: "<<strName;
+							if(iRet == DEAD)
+							{
+								cout<<"\nCell State: DEAD\n";
+							}
+							else
+							{
+								cout<<"\nCell State: ALIVE\n";
+							}
+							cout<<"---------------------------\n";
 						}
 					}
 					break;
@@ -367,8 +385,8 @@ int main()
 		}
 	}
 
-	/*
-	Grid *objGrid = new Grid(4,3);
+	
+	/*Grid *objGrid = new Grid(4,3);
 	
 	objGrid->InsertCell("s", 0);
 	objGrid->InsertCell("w", 1);
