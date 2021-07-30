@@ -80,7 +80,6 @@ class Grid
 		int iRowOffset, iColOffset;
 
 		vector<vector<Cell>> vctGrid;
-		vector<Cell> vctRow;
 
 		void DisplayRow(vector<Cell> vct)
 		{
